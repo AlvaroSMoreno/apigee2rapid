@@ -1,0 +1,32 @@
+{
+  "name": "apigee2rapid",
+  "version": "1.0.2",
+  "description": "Generates OAS File formatted for Rapid Hub from Google APIGEE X platform ",
+  "main": "index.js",
+  "bin": {
+    "apigee2rapid": "./index.js"
+  },
+  "scripts": {
+    "start": "node index.js",
+    "dev": "node index.js"
+  },
+  "keywords": [
+    "rapid",
+    "google",
+    "apigee",
+    "apigeex",
+    "oas",
+    "openapi",
+    "swagger",
+    "api"
+  ],
+  "author": "Alvaro Moreno",
+  "license": "MIT",
+  "dependencies": {
+    "child_process": "^1.0.2",
+    "express": "^4.18.2",
+    "fs": "^0.0.1-security",
+    "xml-js": "^1.6.11",
+    "yaml": "^2.3.1"
+  }
+}
