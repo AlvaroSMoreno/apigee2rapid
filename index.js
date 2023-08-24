@@ -1,7 +1,6 @@
 #! /usr/bin/env node
 
 const fs = require('fs');
-const { exit } = require('process');
 const parser = require('xml-js');
 const YAML = require('yaml');
 const path = require('path');
@@ -10,45 +9,38 @@ let info = {
     "lang": "json",
     "auth": "apikey",
     "config": ".",
-    "folder": ".",
+    "folder": "",
     "info": "",
     "category": "Other"
 };
 
-let index = process.argv.indexOf('-out');
-if(index > -1) {
-    // there's lang flag
-    info.lang = process.argv[index + 1];
+let help_index = process.argv.indexOf('-help');
+if(help_index != -1) {
+    return console.log({
+        "-lang": "json or yaml (default json) Example: -lang=json",
+        "-config": "folder where your config.json file is located (default ./) Example: -config=/config",
+        "-folder": "folder where your apiproxy bundle is located (default ./) Example: -folder=/apis/examples",
+        "-cat": "[SalesAndMarketing, ConnectedTruck, Manufacturing, Other] (default Other) Example: -cat=Other"
+    });
 }
 
-index = process.argv.indexOf('-f');
-if(index > -1) {
-    // there's folder flag
-    info.folder = process.argv[index + 1];
-}
+info.lang = process.env.npm_config_out || 'json';
+info.auth = process.env.npm_config_auth || 'apikey';
+info.config = process.env.npm_config_config || '.';
+info.folder = process.env.npm_config_folder || '';
+info.category = process.env.npm_config_cat || 'Other';
 
-index = process.argv.indexOf('-config');
-if(index > -1) {
-    // there's config flag
-    info.config = process.argv[index + 1];
-}
-
-// category for rapid products
-index = process.argv.indexOf('-cat');
-if(index > -1) {
-    info.category = process.argv[index + 1];
-}
-
+console.log(info);
 
 let name_of_file = '';
-fs.readdirSync(`${info.folder}/apiproxy/`).forEach(file => {
+fs.readdirSync(`.${info.folder}/apiproxy/`).forEach(file => {
 
 if(file.includes('.xml')) {
     name_of_file = file;
 }
 });
 
-const xml_file = `${info.folder}/apiproxy/${name_of_file}`;
+const xml_file = `.${info.folder}/apiproxy/${name_of_file}`;
 const xml = fs.readFileSync(xml_file, { encoding: 'utf8', flag: 'r' });
 var json_data = JSON.parse(parser.xml2json(xml, {
     compact: true,
@@ -78,7 +70,7 @@ if(info.info == '') {
 
 // PATHS
 
-const xml_file2 = `${info.folder}/apiproxy/proxies/default.xml`;
+const xml_file2 = `.${info.folder}/apiproxy/proxies/default.xml`;
 const xml2 = fs.readFileSync(xml_file2, { encoding: 'utf8', flag: 'r' });
 var json_data2 = JSON.parse(parser.xml2json(xml2, {
     compact: true,
@@ -123,7 +115,7 @@ const policies_dir_path = path.join(__dirname, `${info.folder}/apiproxy/policies
         let arr_payload_example = {};
 
         if(temp_xml_file != '') {
-            const xml_policy_dir = `${info.folder}/apiproxy/policies/${temp_xml_file}`;
+            const xml_policy_dir = `.${info.folder}/apiproxy/policies/${temp_xml_file}`;
             const xml_policy = fs.readFileSync(xml_policy_dir, { encoding: 'utf8', flag: 'r' });
             var json_policy = JSON.parse(parser.xml2json(xml_policy, {
                 compact: true,

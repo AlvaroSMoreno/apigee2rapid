@@ -7,8 +7,8 @@
     "apigee2rapid": "./index.js"
   },
   "scripts": {
-    "start": "node index.js",
-    "dev": "node index.js"
+    "start": "node ./index.js",
+    "help": "node ./index.js -help"
   },
   "keywords": [
     "rapid",
