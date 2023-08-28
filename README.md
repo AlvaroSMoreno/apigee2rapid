@@ -46,7 +46,7 @@ npm run start
 ```
 or
 ```
-npm run start -out=yaml
+npm run start -out=yaml -folder=/apibundles
 ```
 
 ## Author
