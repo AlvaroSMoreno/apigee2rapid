@@ -86,11 +86,12 @@ const policies_dir_path = path.join(__dirname, `${info.folder}/apiproxy/policies
     for(flow in obj_arr) {
         counter++;
         let item = obj_arr[flow];
-        const flow_condition = item.Condition._text.replaceAll('(', '').replaceAll(')', '').replaceAll('"','').replaceAll('= ','').replaceAll('=',' ').split(' ');
-        let path_suffix = flow_condition[flow_condition.indexOf('MatchesPath')+1].toString();
-        const http_verb = flow_condition[flow_condition.indexOf('request.verb')+1].toString();
+        const condition_text = item?.Condition?._text || false;
+        const flow_condition = condition_text?condition_text.replaceAll('(', '').replaceAll(')', '').replaceAll('"','').replaceAll('= ','').replaceAll('=',' ').split(' '):false;
+        let path_suffix = flow_condition?flow_condition[flow_condition.indexOf('MatchesPath')+1].toString():'';
+        const http_verb = flow_condition?flow_condition[flow_condition.indexOf('request.verb')+1].toString():'';
         const description = item._attributes.name;
-        const descrip = item.Description._text;
+        const descrip = item?.Description?._text || 'No available description';
 
         const proxy_suffix_name = description.replaceAll(' ', '');
 
