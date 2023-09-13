@@ -11,26 +11,23 @@ After cloning this repo, make sure to run the install command: <br>
 npm install
 ```
 
-## Create a env_config.json File
+## Create a config.json File
 Use the following structure to add a config file <br>
 ```
     [
         {
-            "name": "Development",
-            "hostname": "https://api-dev.xxxx.xxxx.xxxx",
-            "description": "Dev Server"
+            "name": "Dev",
+            "hostname": "https://api-dev.digital.paccar.cloud"
         },
         {
-            "name": "Stagging",
-            "hostname": "https://api-test.xxxx.xxxx.xxxx",
-            "description": "Stagging Server"
+            "name": "Test",
+            "hostname": "https://api-test.digital.paccar.cloud"
         },
         {
-            "name": "Production",
-            "hostname": "https://api-prod.xxxx.xxxx.xxxx",
-            "description": "Production Server"
+            "name": "QA",
+            "hostname": "https://api-qa.digital.paccar.cloud"
         }
-    ]
+]
 ```
 
 ## Help
