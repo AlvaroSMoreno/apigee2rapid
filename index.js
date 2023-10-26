@@ -5,6 +5,7 @@ const parser = require('xml-js');
 const YAML = require('yaml');
 const path = require('path');
 
+
 let info = {
     "lang": "json",
     "auth": "apikey",
@@ -20,8 +21,10 @@ if(help_index != -1) {
         "-lang": "json or yaml (default json) Example: -lang=json",
         "-config": "folder where your config.json file is located (default ./) Example: -config=/config",
         "-folder": "folder where your apiproxy bundle is located (default ./) Example: -folder=/apis/examples",
-        "-cat": "[SalesAndMarketing, ConnectedTruck, Manufacturing, Other] (default Other) Example: -cat=Other"
-    });
+        "-cat": "[SalesAndMarketing, ConnectedTruck, Manufacturing, Other] (default Other) Example: -cat=Other",
+        "-saveFolder": "folder name to save the file in a folder Example: -saveFolder=Done/",
+        "-saveName": "customize file name Example -saveName=oas_file_v2_"
+        });
 }
 
 info.lang = process.env.npm_config_out || 'json';
@@ -29,6 +32,8 @@ info.auth = process.env.npm_config_auth || 'apikey';
 info.config = process.env.npm_config_config || '.';
 info.folder = process.env.npm_config_folder || '';
 info.category = process.env.npm_config_cat || 'Other';
+info.saveFolder = process.env.npm_config_saveFolder || '';
+info.saveName = process.env.npm_config_saveName|| 'oas_file_v2_';
 
 console.log(info);
 
@@ -307,14 +312,35 @@ result["x-documentation"] = {
     "spotlights": []
 };
 
-name_of_file = name_of_file.replace('.xml', '');
 
-if(info.lang == 'json') {
-    fs.writeFileSync(`oas_file_v2_${name_of_file}.json`, JSON.stringify(result, null, '\t'));
-    console.log('Done!');
+if (info.saveName=="oas_file_v2_"){
+
+    name_of_file = name_of_file.replace('.xml', '');
+
+    if(info.lang == 'json') {
+        fs.writeFileSync(`${info.saveFolder}${info.saveName}_${name_of_file}.json`, JSON.stringify(result, null, '\t'));
+        console.log('Done!');
+    }else {
+        const doc = new YAML.Document();
+        doc.contents = result;
+        fs.writeFileSync(`${info.saveFolder}${info.saveName}_${name_of_file}.yaml`, doc.toString());
+        console.log('Done!');
+    }
+
 }else {
-    const doc = new YAML.Document();
-    doc.contents = result;
-    fs.writeFileSync(`oas_file_v2_${name_of_file}.yaml`, doc.toString());
-    console.log('Done!');
+
+    name_of_file = name_of_file.replace('.xml', '');
+
+    if(info.lang == 'json') {
+        fs.writeFileSync(`${info.saveFolder}${info.saveName}.json`, JSON.stringify(result, null, '\t'));
+        console.log('Done!');
+    }else {
+        const doc = new YAML.Document();
+        doc.contents = result;
+        fs.writeFileSync(`${info.saveFolder}${info.saveName}.yaml`, doc.toString());
+        console.log('Done!');
+    }
+
 }
+
+
